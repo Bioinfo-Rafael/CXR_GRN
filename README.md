@@ -19,4 +19,11 @@ Please cite the reference if you use the dataset:
 
 [2] M. Zhang et al., "A New Benchmark: Clinical Uncertainty and Severity Aware Labeled Chest X-Ray Images with Multi-Relationship Graph Learning," in IEEE Transactions on Medical Imaging, doi: 10.1109/TMI.2024.3441494.
 
+## Minimal Single-CXR MRGL Smoke Pipeline
+
+Documentation for the NIH ChestX-ray14 training and inference smoke pipeline:
+
+- [English](docs/MRGL_SMOKE.md)
+- [日本語](docs/MRGL_SMOKE.ja.md)
+- [简体中文](docs/MRGL_SMOKE.zh-CN.md)
 
