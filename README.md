@@ -1,4 +1,13 @@
 # Uncertain-Label
+
+## MRGL Smoke Quick Start
+
+Run the minimal NIH ChestX-ray14 MRGL training/inference pipeline:
+
+- [English documentation](docs/MRGL_SMOKE.md)
+- [日本語ドキュメント](docs/MRGL_SMOKE.ja.md)
+- [简体中文文档](docs/MRGL_SMOKE.zh-CN.md)
+
 This repository includes the introduction to uncertain labels in Chest X-ray diagnosis. We'd like to provide the introduction of our paper and dataset below.
 
 The dataset introduction is updated to a new link: https://github.com/MengRes/MIMIC-CAD.
@@ -18,12 +27,4 @@ Please cite the reference if you use the dataset:
 [1] Zhang, M., Hu, X., Gu, L., Harada, T., Kobayashi, K., Summers, R., & Zhu, Y. (2023). CAD-Chest: Comprehensive Annotation of Diseases based on MIMIC-CXR Radiology Report (version 1.0). PhysioNet. https://doi.org/10.13026/44pd-vz36.
 
 [2] M. Zhang et al., "A New Benchmark: Clinical Uncertainty and Severity Aware Labeled Chest X-Ray Images with Multi-Relationship Graph Learning," in IEEE Transactions on Medical Imaging, doi: 10.1109/TMI.2024.3441494.
-
-## Minimal Single-CXR MRGL Smoke Pipeline
-
-Documentation for the NIH ChestX-ray14 training and inference smoke pipeline:
-
-- [English](docs/MRGL_SMOKE.md)
-- [日本語](docs/MRGL_SMOKE.ja.md)
-- [简体中文](docs/MRGL_SMOKE.zh-CN.md)
 
