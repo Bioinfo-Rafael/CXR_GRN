@@ -2,6 +2,26 @@
 
 语言: [English](MRGL_SMOKE.md) | [日本語](MRGL_SMOKE.ja.md) | **简体中文**
 
+## 最简步骤
+
+在repository root中，替换两个NIH path后运行：
+
+```bash
+python -m pip install -r requirements-mrgl-smoke.txt
+
+python scripts/precompute_cxas_bboxes.py \
+  --csv /path/nih/Data_Entry_2017.csv --image-dir /path/nih/images \
+  --output /path/cache/cxas_boxes.npz --limit 2 --device cpu
+
+python scripts/smoke_train_mrgl.py \
+  --csv /path/nih/Data_Entry_2017.csv --image-dir /path/nih/images \
+  --bbox-cache /path/cache/cxas_boxes.npz --device cpu --optimizer-step
+
+python scripts/smoke_infer_mrgl.py \
+  --csv /path/nih/Data_Entry_2017.csv --image-dir /path/nih/images \
+  --bbox-cache /path/cache/cxas_boxes.npz --device cpu
+```
+
 ## 状态
 
 已使用源自NIH ChestX-ray14的真实图像，分别完成一个batch的MRGL训练和推理smoke test。

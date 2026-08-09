@@ -2,6 +2,26 @@
 
 Languages: **English** | [日本語](MRGL_SMOKE.ja.md) | [简体中文](MRGL_SMOKE.zh-CN.md)
 
+## Quick start
+
+From the repository root, replace the two NIH paths and run:
+
+```bash
+python -m pip install -r requirements-mrgl-smoke.txt
+
+python scripts/precompute_cxas_bboxes.py \
+  --csv /path/nih/Data_Entry_2017.csv --image-dir /path/nih/images \
+  --output /path/cache/cxas_boxes.npz --limit 2 --device cpu
+
+python scripts/smoke_train_mrgl.py \
+  --csv /path/nih/Data_Entry_2017.csv --image-dir /path/nih/images \
+  --bbox-cache /path/cache/cxas_boxes.npz --device cpu --optimizer-step
+
+python scripts/smoke_infer_mrgl.py \
+  --csv /path/nih/Data_Entry_2017.csv --image-dir /path/nih/images \
+  --bbox-cache /path/cache/cxas_boxes.npz --device cpu
+```
+
 ## Status
 
 The MRGL training and inference smoke tests each completed on one batch of real
