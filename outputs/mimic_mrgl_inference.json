@@ -1,0 +1,389 @@
+{
+  "images": 12,
+  "all_checks_passed": true,
+  "results": [
+    {
+      "dicom_id": "00205821-daee23b7-c14c76da-2f54bf9c-0591f7d2",
+      "study_id": "s52510811",
+      "subject_id": "p11809167",
+      "local_image_path": "/Users/cls-lab/Git/LinGu/CXR_GRN/data/mimic_smoke/images/00205821-daee23b7-c14c76da-2f54bf9c-0591f7d2.jpg",
+      "valid_nodes": 19,
+      "placeholder_image": false,
+      "output_shape": [
+        1,
+        14
+      ],
+      "output": [
+        0.644312858581543,
+        0.48357704281806946,
+        0.6363253593444824,
+        0.36735597252845764,
+        0.36471283435821533,
+        0.6747927665710449,
+        0.644900918006897,
+        0.6189143657684326,
+        0.5239530801773071,
+        0.6172013878822327,
+        0.6558680534362793,
+        0.5370926856994629,
+        0.6606752276420593,
+        0.6174278259277344
+      ],
+      "all_tensors_finite": true,
+      "no_grad": true
+    },
+    {
+      "dicom_id": "02aa804e-bde0afdd-112c0b34-7bc16630-4e384014",
+      "study_id": "s50414267",
+      "subject_id": "p10000032",
+      "local_image_path": "/Users/cls-lab/Git/LinGu/CXR_GRN/data/mimic_smoke/images/02aa804e-bde0afdd-112c0b34-7bc16630-4e384014.jpg",
+      "valid_nodes": 19,
+      "placeholder_image": false,
+      "output_shape": [
+        1,
+        14
+      ],
+      "output": [
+        0.6307446956634521,
+        0.4803045392036438,
+        0.6377544403076172,
+        0.37617409229278564,
+        0.3676259517669678,
+        0.6811071634292603,
+        0.6421923637390137,
+        0.5476385354995728,
+        0.4918041527271271,
+        0.5888640880584717,
+        0.6547476053237915,
+        0.4187660813331604,
+        0.6565214991569519,
+        0.3830982744693756
+      ],
+      "all_tensors_finite": true,
+      "no_grad": true
+    },
+    {
+      "dicom_id": "096052b7-d256dc40-453a102b-fa7d01c6-1b22c6b4",
+      "study_id": "s57375967",
+      "subject_id": "p10000764",
+      "local_image_path": "/Users/cls-lab/Git/LinGu/CXR_GRN/data/mimic_smoke/images/096052b7-d256dc40-453a102b-fa7d01c6-1b22c6b4.jpg",
+      "valid_nodes": 19,
+      "placeholder_image": false,
+      "output_shape": [
+        1,
+        14
+      ],
+      "output": [
+        0.6384588479995728,
+        0.6338934898376465,
+        0.6359410285949707,
+        0.3636687695980072,
+        0.3651348948478699,
+        0.6816883087158203,
+        0.6410951614379883,
+        0.621616780757904,
+        0.5634858012199402,
+        0.5853840112686157,
+        0.6575886011123657,
+        0.3806784152984619,
+        0.6577125787734985,
+        0.39958876371383667
+      ],
+      "all_tensors_finite": true,
+      "no_grad": true
+    },
+    {
+      "dicom_id": "174413ec-4ec4c1f7-34ea26b7-c5f994f8-79ef1962",
+      "study_id": "s50414267",
+      "subject_id": "p10000032",
+      "local_image_path": "/Users/cls-lab/Git/LinGu/CXR_GRN/data/mimic_smoke/images/174413ec-4ec4c1f7-34ea26b7-c5f994f8-79ef1962.jpg",
+      "valid_nodes": 15,
+      "placeholder_image": false,
+      "output_shape": [
+        1,
+        14
+      ],
+      "output": [
+        0.55061274766922,
+        0.49042844772338867,
+        0.633853554725647,
+        0.4781085252761841,
+        0.39222416281700134,
+        0.6694768667221069,
+        0.6389291286468506,
+        0.5577915906906128,
+        0.5012054443359375,
+        0.5374486446380615,
+        0.6506340503692627,
+        0.4549065828323364,
+        0.6532342433929443,
+        0.5644406080245972
+      ],
+      "all_tensors_finite": true,
+      "no_grad": true
+    },
+    {
+      "dicom_id": "2a2277a9-b0ded155-c0de8eb9-c124d10e-82c5caab",
+      "study_id": "s53189527",
+      "subject_id": "p10000032",
+      "local_image_path": "/Users/cls-lab/Git/LinGu/CXR_GRN/data/mimic_smoke/images/2a2277a9-b0ded155-c0de8eb9-c124d10e-82c5caab.jpg",
+      "valid_nodes": 19,
+      "placeholder_image": false,
+      "output_shape": [
+        1,
+        14
+      ],
+      "output": [
+        0.6377196907997131,
+        0.6068900227546692,
+        0.6402274370193481,
+        0.35651230812072754,
+        0.36689531803131104,
+        0.6821610927581787,
+        0.6418718099594116,
+        0.6123416423797607,
+        0.4133912920951843,
+        0.609825849533081,
+        0.6554480791091919,
+        0.38881799578666687,
+        0.662031888961792,
+        0.3865864872932434
+      ],
+      "all_tensors_finite": true,
+      "no_grad": true
+    },
+    {
+      "dicom_id": "5c86ee7b-6708acf1-58ae23f1-cd6ad102-02b2c949",
+      "study_id": "s54223485",
+      "subject_id": "p15556497",
+      "local_image_path": "/Users/cls-lab/Git/LinGu/CXR_GRN/data/mimic_smoke/images/5c86ee7b-6708acf1-58ae23f1-cd6ad102-02b2c949.jpg",
+      "valid_nodes": 17,
+      "placeholder_image": false,
+      "output_shape": [
+        1,
+        14
+      ],
+      "output": [
+        0.6189072132110596,
+        0.5481884479522705,
+        0.6331510543823242,
+        0.38219723105430603,
+        0.35972028970718384,
+        0.663364052772522,
+        0.6407462358474731,
+        0.6036742329597473,
+        0.38015443086624146,
+        0.5917848348617554,
+        0.6623218059539795,
+        0.5710815787315369,
+        0.6500022411346436,
+        0.3668672740459442
+      ],
+      "all_tensors_finite": true,
+      "no_grad": true
+    },
+    {
+      "dicom_id": "6e0171e3-0a9c0b9f-38d20391-9352d920-310eca9f",
+      "study_id": "s56308010",
+      "subject_id": "p15964158",
+      "local_image_path": "/Users/cls-lab/Git/LinGu/CXR_GRN/data/mimic_smoke/images/6e0171e3-0a9c0b9f-38d20391-9352d920-310eca9f.jpg",
+      "valid_nodes": 19,
+      "placeholder_image": false,
+      "output_shape": [
+        1,
+        14
+      ],
+      "output": [
+        0.646142840385437,
+        0.5681435465812683,
+        0.635062575340271,
+        0.44131889939308167,
+        0.3633468449115753,
+        0.67816162109375,
+        0.6414392590522766,
+        0.6301970481872559,
+        0.3601715564727783,
+        0.6172948479652405,
+        0.6571476459503174,
+        0.5491421222686768,
+        0.6617046594619751,
+        0.6514331102371216
+      ],
+      "all_tensors_finite": true,
+      "no_grad": true
+    },
+    {
+      "dicom_id": "88498b37-c21dc7ba-bc202800-b517a62d-f7ac5bcf",
+      "study_id": "s58219844",
+      "subject_id": "p10000935",
+      "local_image_path": "/Users/cls-lab/Git/LinGu/CXR_GRN/data/mimic_smoke/images/88498b37-c21dc7ba-bc202800-b517a62d-f7ac5bcf.jpg",
+      "valid_nodes": 19,
+      "placeholder_image": false,
+      "output_shape": [
+        1,
+        14
+      ],
+      "output": [
+        0.6487494707107544,
+        0.636770486831665,
+        0.6342556476593018,
+        0.3689505457878113,
+        0.3642868101596832,
+        0.6858589053153992,
+        0.6403917670249939,
+        0.620985746383667,
+        0.575014591217041,
+        0.5227429270744324,
+        0.6642208099365234,
+        0.5464151501655579,
+        0.6585401296615601,
+        0.6406829953193665
+      ],
+      "all_tensors_finite": true,
+      "no_grad": true
+    },
+    {
+      "dicom_id": "9748d26b-62549e8c-0a4fec22-48ae4480-691c7013",
+      "study_id": "s57333607",
+      "subject_id": "p13473495",
+      "local_image_path": "/Users/cls-lab/Git/LinGu/CXR_GRN/data/mimic_smoke/images/9748d26b-62549e8c-0a4fec22-48ae4480-691c7013.jpg",
+      "valid_nodes": 19,
+      "placeholder_image": false,
+      "output_shape": [
+        1,
+        14
+      ],
+      "output": [
+        0.6405619382858276,
+        0.6164351105690002,
+        0.6381863355636597,
+        0.4008035659790039,
+        0.36072126030921936,
+        0.6781035661697388,
+        0.6427605748176575,
+        0.6191267967224121,
+        0.6198192834854126,
+        0.4711025059223175,
+        0.6592483520507812,
+        0.5909358859062195,
+        0.659477710723877,
+        0.3627387583255768
+      ],
+      "all_tensors_finite": true,
+      "no_grad": true
+    },
+    {
+      "dicom_id": "9b314ad7-fbcb0422-6db62dfc-732858d0-a5527d8b",
+      "study_id": "s51178377",
+      "subject_id": "p10000935",
+      "local_image_path": "/Users/cls-lab/Git/LinGu/CXR_GRN/data/mimic_smoke/images/9b314ad7-fbcb0422-6db62dfc-732858d0-a5527d8b.jpg",
+      "valid_nodes": 19,
+      "placeholder_image": false,
+      "output_shape": [
+        1,
+        14
+      ],
+      "output": [
+        0.6436983346939087,
+        0.5546130537986755,
+        0.6370155811309814,
+        0.3558433949947357,
+        0.3700599670410156,
+        0.6777743101119995,
+        0.6445759534835815,
+        0.6100616455078125,
+        0.5622466206550598,
+        0.614734411239624,
+        0.6619547605514526,
+        0.44316235184669495,
+        0.6575434803962708,
+        0.3605706989765167
+      ],
+      "all_tensors_finite": true,
+      "no_grad": true
+    },
+    {
+      "dicom_id": "b4511ab3-a3f67fb0-8bb99f42-5544a434-decfb38d",
+      "study_id": "s52414568",
+      "subject_id": "p12430456",
+      "local_image_path": "/Users/cls-lab/Git/LinGu/CXR_GRN/data/mimic_smoke/images/b4511ab3-a3f67fb0-8bb99f42-5544a434-decfb38d.jpg",
+      "valid_nodes": 19,
+      "placeholder_image": false,
+      "output_shape": [
+        1,
+        14
+      ],
+      "output": [
+        0.6373629570007324,
+        0.5932344198226929,
+        0.6383951306343079,
+        0.3552507162094116,
+        0.3650226593017578,
+        0.6827621459960938,
+        0.6425763964653015,
+        0.6242426633834839,
+        0.544649600982666,
+        0.5667639970779419,
+        0.6590684652328491,
+        0.4038275182247162,
+        0.6613867282867432,
+        0.42005184292793274
+      ],
+      "all_tensors_finite": true,
+      "no_grad": true
+    },
+    {
+      "dicom_id": "e084de3b-be89b11e-20fe3f9f-9c8d8dfe-4cfd202c",
+      "study_id": "s53189527",
+      "subject_id": "p10000032",
+      "local_image_path": "/Users/cls-lab/Git/LinGu/CXR_GRN/data/mimic_smoke/images/e084de3b-be89b11e-20fe3f9f-9c8d8dfe-4cfd202c.jpg",
+      "valid_nodes": 17,
+      "placeholder_image": false,
+      "output_shape": [
+        1,
+        14
+      ],
+      "output": [
+        0.612762451171875,
+        0.5065041780471802,
+        0.6365888714790344,
+        0.4882456064224243,
+        0.3827383518218994,
+        0.6848890781402588,
+        0.6397198438644409,
+        0.5473206043243408,
+        0.5476799607276917,
+        0.5463981032371521,
+        0.6539146900177002,
+        0.509179949760437,
+        0.6579395532608032,
+        0.626150369644165
+      ],
+      "all_tensors_finite": true,
+      "no_grad": true
+    }
+  ],
+  "model": "ImageNet ResNet-50 + randomly initialized MRGL graph/head",
+  "head_dimension": 14,
+  "head_taxonomy": [
+    "Atelectasis",
+    "Cardiomegaly",
+    "Effusion",
+    "Infiltration",
+    "Mass",
+    "Nodule",
+    "Pneumonia",
+    "Pneumothorax",
+    "Consolidation",
+    "Edema",
+    "Emphysema",
+    "Fibrosis",
+    "Pleural_Thickening",
+    "Hernia"
+  ],
+  "semantic_graph": "TableV group fallback, NOT paper exact",
+  "training_performed": false,
+  "labels_available": false,
+  "manifest": "data/mimic_smoke/manifest.jsonl",
+  "bbox_cache": "data/mimic_smoke/cxas_boxes.npz"
+}
