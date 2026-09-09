@@ -1,61 +1,61 @@
-# CXR_GRN — 胸部X線の解剖領域グラフ分類
+# CXR_GRN — 胸部 X 光解剖区域图分类
 
 [日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md)
 
-胸部X線を26の解剖領域に分け、領域間の関係をMRGL（Multi-Relationship Graph Learning）で扱うrepositoryです。元のCAD-Chest／uncertain-label研究コードに、**単一CXRの学習・推論を確認するadapterとsmoke入口**を追加しています。
+本 repository 将胸部 X 光表示为 26 个解剖区域，用 MRGL（Multi-Relationship Graph Learning）处理区域间关系。在原 CAD-Chest／uncertain-label 研究代码基础上，增加了**用于验证单张 CXR 训练与推理的 adapter 和 smoke 入口**。
 
-[できること](#capabilities) · [構成](#layout) · [実行方法](#run) · [実装上の変更](#implementation) · [旧本文・論文情報](#archive)
+[功能](#capabilities) · [目录](#layout) · [运行](#run) · [实现修改](#implementation) · [原文与论文信息](#archive)
 
 <a id="capabilities"></a>
 
-## 1. 何ができるか
+## 1. 可以运行什么
 
-| データ | できること | 教師の条件 |
+| 数据 | 功能 | 教师条件 |
 |---|---|---|
-| NIH ChestX-ray14 | 実画像のtraining 1 batch、backward、optimizer step、inference | 正規CSVの14-label教師を使用 |
-| 手動MIMIC-CXR-JPG | CXR_LLMの画像を共有し、CXAS bbox cache→MRGL inference | 推論はpaired JSON不要。学習は正当なlabelが揃うまで実行しない |
+| NIH ChestX-ray14 | 真实图像 training 1 batch、backward、optimizer step、inference | 使用正规 CSV 的 14-label 教师 |
+| 手动 MIMIC-CXR-JPG | 共享 CXR_LLM 图像，CXAS bbox cache→MRGL 推理 | 推理不需要 paired JSON；正规标签齐备前不训练 |
 
-手元ではNIH 2枚（train 1／test 1）とMIMIC 12枚を確認済みです。MIMIC画像がStage 1/2 annotationと一致するかどうかは、GRNの推論条件ではありません。
+本地已验证 NIH 2 张（train 1／test 1）和 MIMIC 12 张。MIMIC 图像是否匹配 Stage 1/2 annotation，不是 GRN 推理的前提。
 
-処理順は`画像 → CXAS bbox → ResNet-50 → ROIAlignの26 node → 3種類のgraph → 14次元出力`です。VLMによる文章生成は[CXR_LLM](../CXR_LLM/README.md)、GRPOは[CURV_stage3_repro](../CURV_stage3_repro/README.md)が担当します。
+流程为 `图像 → CXAS bbox → ResNet-50 → ROIAlign 的 26 nodes → 三类 graph → 14 维输出`。VLM 文章生成由 [CXR_LLM](../CXR_LLM/README.zh-CN.md)负责，GRPO 由 [CURV_stage3_repro](../CURV_stage3_repro/README.zh-CN.md)负责。
 
 <a id="layout"></a>
 
-## 2. Directory構成
+## 2. Directory 结构
 
 ```text
 CXR_GRN/
-├── models/                     # 既存modelと追加MRGLClassifier
-├── adapters/                   # NIH／MIMIC loader、CXAS cache、Semantic graph
-├── scripts/                    # bbox作成、NIH学習・推論、MIMIC推論の入口
+├── models/                     # 既有 model 和新增 MRGLClassifier
+├── adapters/                   # NIH/MIMIC loader、CXAS cache、Semantic graph
+├── scripts/                    # bbox 创建、NIH 训练／推理、MIMIC 推理入口
 ├── data/
-│   ├── nih_smoke/              # NIH画像、CSV、split、bbox cache（ローカル）
-│   └── mimic_smoke/            # 共有画像symlink、manifest、cache（ローカル）
-├── tests/                      # MIMIC整合性・label非捏造のテスト
-├── outputs/                    # MIMIC inference結果
-├── docs/                       # 既存MRGL adapter仕様・検証資料
-├── requirements-mrgl-smoke.txt  # smoke依存関係
+│   ├── nih_smoke/              # 本地 NIH 图像、CSV、split、bbox cache
+│   └── mimic_smoke/            # 本地共享图像 symlink、manifest、cache
+├── tests/                      # MIMIC 一致性／不伪造标签的测试
+├── outputs/                    # MIMIC 推理结果
+├── docs/                       # 既有 MRGL adapter 规格与验证资料
+├── requirements-mrgl-smoke.txt  # Smoke 依赖
 ├── anatomical_feature_extract.py
 ├── disease_feature_extract.py
-├── feature extraction/         # 元の特徴抽出・結合処理
+├── feature extraction/         # 原特征提取／合并处理
 ├── graph_mimic_new.py
-├── train.py                    # 元の学習入口（今回のsmokeとは別）
+├── train.py                    # 原训练入口，与本 smoke 分开
 └── utils/
 ```
 
 <a id="run"></a>
 
-## 3. 実行方法
+## 3. 运行方法
 
-このrepositoryのrootから実行します。検証環境は`scdiffusion`（Python 3.9／torch 2.5.1／CXAS 0.0.18）です。別マシンでは互換環境を用意してください。
+从本 repository root 执行。验证环境为 `scdiffusion`（Python 3.9／torch 2.5.1／CXAS 0.0.18）。其他机器需准备兼容环境。
 
-初回依存関係は`requirements-mrgl-smoke.txt`、画像・環境の準備を含む全体手順は既存RUN_GUIDEにあります。
+首次依赖见 `requirements-mrgl-smoke.txt`。包含图像和环境准备的完整流程见既有 RUN_GUIDE。
 
 [日本語](../CXR_LLM/docs/RUN_GUIDE.ja.md#grn) | [English](../CXR_LLM/docs/RUN_GUIDE.en.md#grn) | [简体中文](../CXR_LLM/docs/RUN_GUIDE.zh-CN.md#grn)
 
-### NIH：実画像で1 batch学習・推論
+### NIH：真实图像单 Batch 训练与推理
 
-以下は正規画像、CSV、split、CXAS cacheを準備済みの場合です。初回cache作成は[既存adapter手順](docs/MRGL_SMOKE.ja.md)を参照してください。
+以下假设正规图像、CSV、split、CXAS cache 已准备完成。首次创建 cache 见[既有 adapter 指南](docs/MRGL_SMOKE.zh-CN.md)。
 
 ```bash
 conda run --no-capture-output -n scdiffusion python scripts/smoke_train_mrgl.py \
@@ -67,11 +67,11 @@ conda run --no-capture-output -n scdiffusion python scripts/smoke_infer_mrgl.py 
   --bbox-cache data/nih_smoke/cxas_boxes.npz --split-file data/nih_smoke/test_list.txt --device cpu
 ```
 
-成功markerは`loss.backward() ok`、`optimizer.step() executed`、`torch.no_grad() forward ok`です。`--optimizer-step`を省くとstepは実行しません。
+成功 marker 为 `loss.backward() ok`、`optimizer.step() executed`、`torch.no_grad() forward ok`。省略 `--optimizer-step` 将不执行更新。
 
-### MIMIC：共有画像でbbox作成・推論
+### MIMIC：共享图像、创建 Bbox Cache、推理
 
-先に[CXR_LLMの画像整理](../CXR_LLM/docs/RUN_GUIDE.ja.md#images)でmanifestを作ります。画像はsymlinkで共有し、コピーもMIMICの再downloadもしません。
+先通过 [CXR_LLM 图像整理](../CXR_LLM/docs/RUN_GUIDE.zh-CN.md#images)生成 manifest。用 symlink 共享图像，不复制、不重新下载 MIMIC。
 
 ```bash
 conda run --no-capture-output -n scdiffusion python scripts/prepare_mimic_manifest.py \
@@ -83,33 +83,33 @@ conda run --no-capture-output -n scdiffusion python scripts/smoke_infer_mimic_mr
 conda run --no-capture-output -n scdiffusion python -m unittest discover -s tests -v
 ```
 
-IDと画像byteが同じならcacheを再利用できます。画像を増やしたらcacheと`.npz.images.json`を再作成します。
+ID 和图像 byte 不变时可复用 cache。增加图像后重新生成 cache 和 `.npz.images.json`。
 
-成功は`MIMIC CXAS CACHE OK`、`MIMIC REAL IMAGE MRGL INFERENCE OK 12`。結果は`outputs/mimic_mrgl_inference.json`です。全画像でplaceholder false、有限tensor、node `[1,26,2048]`、adjacency `[1,26,26]`、output `[1,14]`、no_gradを確認します。
+成功 marker 为 `MIMIC CXAS CACHE OK`、`MIMIC REAL IMAGE MRGL INFERENCE OK 12`。结果保存到 `outputs/mimic_mrgl_inference.json`。每张图像都需检查 placeholder false、有限 tensor、node `[1,26,2048]`、adjacency `[1,26,26]`、output `[1,14]` 和 no_grad。
 
 <a id="implementation"></a>
 
-## 4. 実装上の追加・変更と限界
+## 4. 实现补充、修改与限制
 
-| 箇所 | 実装方針 |
+| 部分 | 实现策略 |
 |---|---|
-| 単一CXR model | `models/mrgl_classifier.py`に26-node MRGLを追加。画像pairやquestion embeddingを要求する既存経路とは分離 |
-| 画像／教師adapter | NIHは正規CSV、MIMICはmanifestとSHA-256を検査。MIMIC inference datasetはtargetを返さない |
-| CXAS | 直接対応しない7領域や空maskはinvalid。2つのlung-base近似をmetadataに明記 |
-| ROIAlign | invalid nodeは特徴を0にする。1×1 sentinelは計算用で解剖bboxではない |
-| Semantic graph | Table V group fallback。論文exact adjacencyとは区別 |
-| Weight | ResNetはImageNet pretrained、MRGL graph/headはランダム初期化 |
-| Ensemble | Spatial／Semantic／Implicitを0.3／0.4／0.3で合成 |
+| 单张 CXR model | 在 `models/mrgl_classifier.py` 增加 26-node MRGL，与需要图像 pair／question embedding 的既有路径分开 |
+| 图像／教师 adapter | NIH 使用正规 CSV；MIMIC 验证 manifest 和 SHA-256，推理 dataset 不返回 target |
+| CXAS | 无直接映射的 7 个区域及空 mask 保持 invalid；metadata 明确记录两个 lung-base 近似 |
+| ROIAlign | Invalid node 特征置 0；1×1 sentinel 仅用于计算，不是解剖 bbox |
+| Semantic graph | Table V group fallback，与论文精确 adjacency 区分 |
+| Weight | ResNet 使用 ImageNet 预训练，MRGL graph/head 随机初始化 |
+| Ensemble | Spatial／Semantic／Implicit 以 0.3／0.4／0.3 合成 |
 
-動作確認であり、論文の分類性能・18/60-label設定・CAD-Chest全実験の再現ではありません。MIMIC trainingには正規label、study/dicom紐付け、クラス順序、欠測／uncertainty方針が必要です。NIHとCheXpertは同じ14次元でもtaxonomyが違い、dummy／全0教師で代用しません。
+这是执行验证，不是论文分类性能、18/60-label 配置或完整 CAD-Chest 实验复现。MIMIC training 需要正规标签、study/dicom 对应、类别顺序及缺失／uncertainty 策略。NIH 与 CheXpert 即使同为 14 维，taxonomy 也不同，不使用 dummy／全 0 教师代替。
 
-元のmodel／preprocessingファイルは書き換えず、wrapper／adapterで補完しています。詳細仕様は[日本語](docs/MRGL_SMOKE.ja.md)・[English](docs/MRGL_SMOKE.md)・[简体中文](docs/MRGL_SMOKE.zh-CN.md)、初期MIMICの記録は[既存資料](docs/MIMIC_SMOKE.ja.md)を参照してください。
+不改写原 model／preprocessing 文件，通过 wrapper／adapter 补充。详细规格见[日本語](docs/MRGL_SMOKE.ja.md)、[English](docs/MRGL_SMOKE.md)、[简体中文](docs/MRGL_SMOKE.zh-CN.md)。初期 MIMIC 运行记录保留在[既有资料](docs/MIMIC_SMOKE.ja.md)中。
 
 <a id="archive"></a>
 
-## 付録：既存本文・データセット紹介・引用・配置履歴
+## 附录：既有原文、数据集介绍、引用与目录历史
 
-整理前のREADME全文を以下にそのまま保存しています。論文・datasetの説明と引用、英語の実行手順、マシン固有の配置も省略していません。
+以下按原语言完整保留整理前的 README，未省略论文／dataset 说明、引用、英文运行命令或机器相关目录信息。
 
 <details>
 <summary>整理前のREADME全文 / Previous README (verbatim) / 原README全文</summary>

@@ -1,61 +1,61 @@
-# CXR_GRN — 胸部X線の解剖領域グラフ分類
+# CXR_GRN — Anatomical Graph Classification of Chest X-rays
 
 [日本語](README.md) | [English](README.en.md) | [简体中文](README.zh-CN.md)
 
-胸部X線を26の解剖領域に分け、領域間の関係をMRGL（Multi-Relationship Graph Learning）で扱うrepositoryです。元のCAD-Chest／uncertain-label研究コードに、**単一CXRの学習・推論を確認するadapterとsmoke入口**を追加しています。
+This repository represents chest X-rays as 26 anatomical regions and models their relationships with MRGL (Multi-Relationship Graph Learning). It adds **adapters and smoke entry points for single-CXR training/inference** to the original CAD-Chest/uncertain-label research code.
 
-[できること](#capabilities) · [構成](#layout) · [実行方法](#run) · [実装上の変更](#implementation) · [旧本文・論文情報](#archive)
+[Capabilities](#capabilities) · [Layout](#layout) · [Running](#run) · [Implementation changes](#implementation) · [Original text/paper information](#archive)
 
 <a id="capabilities"></a>
 
-## 1. 何ができるか
+## 1. What You Can Run
 
-| データ | できること | 教師の条件 |
+| Data | Capabilities | Supervision requirements |
 |---|---|---|
-| NIH ChestX-ray14 | 実画像のtraining 1 batch、backward、optimizer step、inference | 正規CSVの14-label教師を使用 |
-| 手動MIMIC-CXR-JPG | CXR_LLMの画像を共有し、CXAS bbox cache→MRGL inference | 推論はpaired JSON不要。学習は正当なlabelが揃うまで実行しない |
+| NIH ChestX-ray14 | One real-image training batch, backward, optimizer step, inference | Legitimate 14-label CSV targets |
+| Manually downloaded MIMIC-CXR-JPG | Share CXR_LLM images, build CXAS bbox cache, run MRGL inference | No paired JSON for inference; no training until legitimate labels are available |
 
-手元ではNIH 2枚（train 1／test 1）とMIMIC 12枚を確認済みです。MIMIC画像がStage 1/2 annotationと一致するかどうかは、GRNの推論条件ではありません。
+Locally verified: two NIH images (one train/one test) and 12 MIMIC images. Matching a Stage 1/2 annotation is not a prerequisite for GRN inference.
 
-処理順は`画像 → CXAS bbox → ResNet-50 → ROIAlignの26 node → 3種類のgraph → 14次元出力`です。VLMによる文章生成は[CXR_LLM](../CXR_LLM/README.md)、GRPOは[CURV_stage3_repro](../CURV_stage3_repro/README.md)が担当します。
+The pipeline is `image → CXAS bbox → ResNet-50 → 26 ROIAlign nodes → three graph types → 14-dimensional output`. VLM report generation belongs to [CXR_LLM](../CXR_LLM/README.en.md); GRPO belongs to [CURV_stage3_repro](../CURV_stage3_repro/README.en.md).
 
 <a id="layout"></a>
 
-## 2. Directory構成
+## 2. Directory Layout
 
 ```text
 CXR_GRN/
-├── models/                     # 既存modelと追加MRGLClassifier
-├── adapters/                   # NIH／MIMIC loader、CXAS cache、Semantic graph
-├── scripts/                    # bbox作成、NIH学習・推論、MIMIC推論の入口
+├── models/                     # Existing models and added MRGLClassifier
+├── adapters/                   # NIH/MIMIC loaders, CXAS cache, Semantic graph
+├── scripts/                    # Bboxes, NIH training/inference, MIMIC inference
 ├── data/
-│   ├── nih_smoke/              # NIH画像、CSV、split、bbox cache（ローカル）
-│   └── mimic_smoke/            # 共有画像symlink、manifest、cache（ローカル）
-├── tests/                      # MIMIC整合性・label非捏造のテスト
-├── outputs/                    # MIMIC inference結果
-├── docs/                       # 既存MRGL adapter仕様・検証資料
-├── requirements-mrgl-smoke.txt  # smoke依存関係
+│   ├── nih_smoke/              # Local NIH images, CSV, splits, bbox cache
+│   └── mimic_smoke/            # Local shared-image symlinks, manifest, cache
+├── tests/                      # MIMIC integrity / no-fabricated-label tests
+├── outputs/                    # MIMIC inference results
+├── docs/                       # Existing MRGL adapter specifications/evidence
+├── requirements-mrgl-smoke.txt  # Smoke dependencies
 ├── anatomical_feature_extract.py
 ├── disease_feature_extract.py
-├── feature extraction/         # 元の特徴抽出・結合処理
+├── feature extraction/         # Original feature extraction/combination
 ├── graph_mimic_new.py
-├── train.py                    # 元の学習入口（今回のsmokeとは別）
+├── train.py                    # Original training entry, separate from this smoke
 └── utils/
 ```
 
 <a id="run"></a>
 
-## 3. 実行方法
+## 3. How to Run
 
-このrepositoryのrootから実行します。検証環境は`scdiffusion`（Python 3.9／torch 2.5.1／CXAS 0.0.18）です。別マシンでは互換環境を用意してください。
+Run from this repository root. The verified environment is `scdiffusion` (Python 3.9 / torch 2.5.1 / CXAS 0.0.18). Prepare a compatible environment on another machine.
 
-初回依存関係は`requirements-mrgl-smoke.txt`、画像・環境の準備を含む全体手順は既存RUN_GUIDEにあります。
+Initial dependencies are in `requirements-mrgl-smoke.txt`. The existing RUN_GUIDE covers the complete workflow, including environment and image preparation.
 
 [日本語](../CXR_LLM/docs/RUN_GUIDE.ja.md#grn) | [English](../CXR_LLM/docs/RUN_GUIDE.en.md#grn) | [简体中文](../CXR_LLM/docs/RUN_GUIDE.zh-CN.md#grn)
 
-### NIH：実画像で1 batch学習・推論
+### NIH: One Real-Image Training Batch and Inference
 
-以下は正規画像、CSV、split、CXAS cacheを準備済みの場合です。初回cache作成は[既存adapter手順](docs/MRGL_SMOKE.ja.md)を参照してください。
+These commands assume legitimate images, CSV, splits, and CXAS cache already exist. For initial cache creation, see the [existing adapter guide](docs/MRGL_SMOKE.md).
 
 ```bash
 conda run --no-capture-output -n scdiffusion python scripts/smoke_train_mrgl.py \
@@ -67,11 +67,11 @@ conda run --no-capture-output -n scdiffusion python scripts/smoke_infer_mrgl.py 
   --bbox-cache data/nih_smoke/cxas_boxes.npz --split-file data/nih_smoke/test_list.txt --device cpu
 ```
 
-成功markerは`loss.backward() ok`、`optimizer.step() executed`、`torch.no_grad() forward ok`です。`--optimizer-step`を省くとstepは実行しません。
+Success markers: `loss.backward() ok`, `optimizer.step() executed`, and `torch.no_grad() forward ok`. Omitting `--optimizer-step` skips the update.
 
-### MIMIC：共有画像でbbox作成・推論
+### MIMIC: Shared Images, Bbox Cache, and Inference
 
-先に[CXR_LLMの画像整理](../CXR_LLM/docs/RUN_GUIDE.ja.md#images)でmanifestを作ります。画像はsymlinkで共有し、コピーもMIMICの再downloadもしません。
+First create a manifest through [CXR_LLM image preparation](../CXR_LLM/docs/RUN_GUIDE.en.md#images). Images are shared through symlinks without copying or downloading MIMIC again.
 
 ```bash
 conda run --no-capture-output -n scdiffusion python scripts/prepare_mimic_manifest.py \
@@ -83,33 +83,33 @@ conda run --no-capture-output -n scdiffusion python scripts/smoke_infer_mimic_mr
 conda run --no-capture-output -n scdiffusion python -m unittest discover -s tests -v
 ```
 
-IDと画像byteが同じならcacheを再利用できます。画像を増やしたらcacheと`.npz.images.json`を再作成します。
+Reuse the cache when IDs and image bytes are unchanged. After adding images, regenerate the cache and `.npz.images.json`.
 
-成功は`MIMIC CXAS CACHE OK`、`MIMIC REAL IMAGE MRGL INFERENCE OK 12`。結果は`outputs/mimic_mrgl_inference.json`です。全画像でplaceholder false、有限tensor、node `[1,26,2048]`、adjacency `[1,26,26]`、output `[1,14]`、no_gradを確認します。
+Success markers: `MIMIC CXAS CACHE OK` and `MIMIC REAL IMAGE MRGL INFERENCE OK 12`. Results go to `outputs/mimic_mrgl_inference.json`. Every image must have placeholder false, finite tensors, nodes `[1,26,2048]`, adjacency `[1,26,26]`, output `[1,14]`, and no_grad.
 
 <a id="implementation"></a>
 
-## 4. 実装上の追加・変更と限界
+## 4. Implementation Additions, Changes, and Limits
 
-| 箇所 | 実装方針 |
+| Area | Implementation policy |
 |---|---|
-| 単一CXR model | `models/mrgl_classifier.py`に26-node MRGLを追加。画像pairやquestion embeddingを要求する既存経路とは分離 |
-| 画像／教師adapter | NIHは正規CSV、MIMICはmanifestとSHA-256を検査。MIMIC inference datasetはtargetを返さない |
-| CXAS | 直接対応しない7領域や空maskはinvalid。2つのlung-base近似をmetadataに明記 |
-| ROIAlign | invalid nodeは特徴を0にする。1×1 sentinelは計算用で解剖bboxではない |
-| Semantic graph | Table V group fallback。論文exact adjacencyとは区別 |
-| Weight | ResNetはImageNet pretrained、MRGL graph/headはランダム初期化 |
-| Ensemble | Spatial／Semantic／Implicitを0.3／0.4／0.3で合成 |
+| Single-CXR model | Added 26-node MRGL in `models/mrgl_classifier.py`, separate from existing paths requiring image pairs/question embeddings |
+| Image/label adapters | NIH reads legitimate CSV labels; MIMIC verifies manifests/SHA-256 and returns no inference target |
+| CXAS | Seven unmapped regions and empty masks stay invalid; two lung-base approximations are explicit in metadata |
+| ROIAlign | Invalid-node features are zero; the 1×1 sentinel is computational, not anatomical |
+| Semantic graph | Table V group fallback, not the paper-exact adjacency |
+| Weights | ImageNet-pretrained ResNet; randomly initialized MRGL graph/head |
+| Ensemble | Spatial/Semantic/Implicit combined with weights 0.3/0.4/0.3 |
 
-動作確認であり、論文の分類性能・18/60-label設定・CAD-Chest全実験の再現ではありません。MIMIC trainingには正規label、study/dicom紐付け、クラス順序、欠測／uncertainty方針が必要です。NIHとCheXpertは同じ14次元でもtaxonomyが違い、dummy／全0教師で代用しません。
+This checks execution, not paper classification performance, 18/60-label settings, or all CAD-Chest experiments. MIMIC training requires legitimate labels, study/dicom linkage, class ordering, and a missing/uncertainty policy. NIH and CheXpert have different taxonomies despite both having 14 dimensions; dummy/all-zero labels are not substitutes.
 
-元のmodel／preprocessingファイルは書き換えず、wrapper／adapterで補完しています。詳細仕様は[日本語](docs/MRGL_SMOKE.ja.md)・[English](docs/MRGL_SMOKE.md)・[简体中文](docs/MRGL_SMOKE.zh-CN.md)、初期MIMICの記録は[既存資料](docs/MIMIC_SMOKE.ja.md)を参照してください。
+Original model/preprocessing files are not rewritten; wrappers/adapters supplement them. Detailed specifications: [日本語](docs/MRGL_SMOKE.ja.md), [English](docs/MRGL_SMOKE.md), [简体中文](docs/MRGL_SMOKE.zh-CN.md). The [existing MIMIC notes](docs/MIMIC_SMOKE.ja.md) retain initial execution history.
 
 <a id="archive"></a>
 
-## 付録：既存本文・データセット紹介・引用・配置履歴
+## Appendix: Original Text, Dataset Introduction, Citations, and Layout History
 
-整理前のREADME全文を以下にそのまま保存しています。論文・datasetの説明と引用、英語の実行手順、マシン固有の配置も省略していません。
+The complete previous README is preserved verbatim below in its original language. Paper/dataset descriptions, citations, English commands, and machine-specific layout information are not omitted.
 
 <details>
 <summary>整理前のREADME全文 / Previous README (verbatim) / 原README全文</summary>
